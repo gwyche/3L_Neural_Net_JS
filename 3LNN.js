@@ -1,17 +1,32 @@
 //CONTROL VARIABLES/////
 //Input vector
-var inputVector = [1,1,2,1,1,2,1,1];
+var input = [.9,.7,.1,0,0,.1,0,.36];
+
+var inputSize = 50;
 
 //Vector the AI is training to match
-var targetVector = [.5,0,0,0,0,0,0,0];
+var targetVector = [.5,0,0,(0-.5),0,0,.3,0];
 
 //Hyperparameters
-var learningFactor = .325;
+var learningFactor = .5;
 var percentUpdated = .0075;
+var bias = .00001;
 
 //Loop iterations
-var runs = 800;
+var runs = 1000;
 ////////////////////////
+
+var inputVector = [];
+
+inputVector = input;
+
+for(let i = input.length; i < inputSize; i++){
+    inputVector[i] = 0;
+}
+
+for(let i = targetVector.length; i < inputSize; i++){
+    targetVector[i] = 0;
+}
 
 
 //Matrix generator that randomizes all cells
@@ -48,7 +63,7 @@ function matrixMultiply(inputV, weightM, diam){
         for(let k = 0; k < diam; k++){
             sum = sum + (inputV[k] * weightM[i][k]);
         }
-        outputVector[i] = Math.tanh(sum);
+        outputVector[i] = Math.tanh(sum + bias);
     }
 
     return outputVector;
@@ -74,9 +89,9 @@ function randomlyUpdateWeights(weights, diam){
 }
 
 //New randomized square weight matrix
-let weightMatrix1 = create0Matrix(8);
-let weightMatrix2 = create0Matrix(8);
-let weightMatrix3 = create0Matrix(8);
+let weightMatrix1 = create0Matrix(inputSize);
+let weightMatrix2 = create0Matrix(inputSize);
+let weightMatrix3 = create0Matrix(inputSize);
 
 let transformedVector = [];
 let transformedVectorTemp = [];
